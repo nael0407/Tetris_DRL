@@ -274,3 +274,4 @@ def get_valid_placements(
         )
 
     return valid_list
+

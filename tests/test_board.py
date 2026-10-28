@@ -231,3 +231,4 @@ def test_valid_placements_count() -> None:
             assert mask[p.action] is np.True_
             assert not p.is_game_over
             assert p.next_board.shape == board.shape
+

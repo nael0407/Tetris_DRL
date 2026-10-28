@@ -48,3 +48,12 @@ Format per entri:
   - Melakukan simulasi jatuh per langkah (step-by-step falling loop) untuk hard drop (ditolak karena tidak diperlukan pada model penempatan akhir tanpa tuck dan membebani komputasi).
   - Hanya menulis versi Numba tanpa versi referensi NumPy murni (ditolak karena melanggar prinsip verifikasi kontrak kerja: kebenaran logika Numba wajib dibuktikan setara dengan kode referensi murni).
 - **Dampak:** Perilaku NumPy dan Numba terbukti 100% identik pada pengujian 2.500 variasi papan acak (`test_board_equiv.py`), sekaligus menyediakan fungsi batch afterstate berkecepatan tinggi untuk tahapan algoritma RL.
+
+---
+
+## 2026-10-28: Pengalihan Operasi Git ke Pemilik Proyek
+- **Tanggal:** 2026-10-28
+- **Keputusan:** Operasi `git add`, `git commit`, dan `git push` sepenuhnya dieksekusi secara manual oleh pemilik proyek (Natanael). AI Agent hanya bertugas menyiapkan dan menyajikan perintah Git yang tepat, terstruktur, dan siap salin-tempel di setiap akhir laporan tahap.
+- **Alasan:** Instruksi langsung dari pemilik proyek untuk memegang kendali penuh atas manajemen versi lokal dan repositori GitHub.
+- **Alternatif yang ditolak:** Agen mengeksekusi git commit/push otomatis via bash tool.
+- **Dampak:** Agen tidak akan lagi menjalankan perintah `git add`, `git commit`, atau `git push` secara mandiri.
