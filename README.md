@@ -111,27 +111,27 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest tests/
 
 ## Cara Reproduksi Eksperimen (Cepat & Skala Penuh)
 
-### 1. Evaluasi Cepat Baseline Klasik (~5 detik)
+### 1. Evaluasi Cepat Baseline Klasik 
 ```bash
 python scripts/evaluate.py --config configs/baseline_heuristic.yaml
 ```
 
-### 2. Pelatihan Linear TD(0) Afterstate (~10 detik)
+### 2. Pelatihan Linear TD(0) Afterstate 
 ```bash
 python scripts/train.py --config configs/e2_td_features.yaml
 ```
 
-### 3. Pelatihan Cross-Entropy Method (~1.5 menit)
+### 3. Pelatihan Cross-Entropy Method 
 ```bash
 python scripts/train.py --config configs/e1_cem_features.yaml
 ```
 
-### 4. Pelatihan Deep Q-Network Afterstate (~2 menit)
+### 4. Pelatihan Deep Q-Network Afterstate 
 ```bash
 python scripts/train.py --config configs/e2_td_net.yaml
 ```
 
-### 5. Menjalankan Analisis Interpretabilitas (~3 detik)
+### 5. Menjalankan Analisis Interpretabilitas 
 ```bash
 python scripts/analyze.py --model models/final/e2_td_net_best.pt
 ```
