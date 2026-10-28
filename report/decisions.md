@@ -92,3 +92,38 @@ Format per entri:
   - Membiarkan `ValidPlacement` tanpa `landing_row` (ditolak karena memaksa agen menghitung ulang pendaratan yang sebenarnya sudah didapat saat penempatan).
 - **Dampak:** Seluruh 33 unit test (mencakup rotasi, multi-baris tak bersambung, presisi batas game over, preservasi lubang, dan simulasi deterministik multi-seed) lulus 100%.
 - **Dampak:** Agen tidak akan lagi menjalankan perintah `git add`, `git commit`, atau `git push` secara mandiri.
+
+---
+
+## 2026-10-28: Arsitektur Renderer Teks & Pygame (Tahap 4)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Memisahkan visualisasi menjadi dua modul independen: `tetris_rl/render_text.py` (terminal ASCII/Unicode) dan `tetris_rl/render_pygame.py` (grafis Pygame 2D).
+  2. Mengimplementasikan mode headless otomatis (`SDL_VIDEODRIVER=dummy`) pada `PygameRenderer` jika `DISPLAY` tidak terpasang atau saat flag `headless=True` aktif.
+  3. Mengimplementasikan fungsi `render_drop_animation` yang menghasilkan deretan frame RGB meluncur dari atas ke posisi landing row sebelum mengeksekusi frame papan hasil, serta fungsi `save_gif` berbasis `imageio`.
+- **Alasan:**
+  1. Menjaga komitmen Bagian 9 Dokumen Proyek: visualisasi tidak boleh memperlambat atau berada di dalam loop pelatihan agen.
+  2. Memungkinkan pengujian unit otomatis di CI/lingkungan server Linux headless tanpa X11 display server.
+  3. Memenuhi kebutuhan portofolio untuk merekam GIF/video evolusi belajar agen per checkpoint.
+- **Alternatif yang ditolak:**
+  - Menggabungkan kode pygame langsung di dalam `TetrisEnv.step()` (ditolak karena membuat pelatihan menjadi ribuan kali lebih lambat dan merusak arsitektur modular).
+  - Menggunakan library video encoding berat seperti OpenCV (ditolak karena `imageio` + `pillow` jauh lebih ringan dan sesuai dengan stack Python murni proyek).
+- **Dampak:** Tersedia visualisasi teks cepat di terminal dan kemampuan merekam rekaman visual animasi piece ke format GIF/MP4 tanpa monitor fisik. File demo visual berhasil di-generate di `docs/assets/demo_stage4.gif`.
+
+---
+
+## 2026-10-28: Arsitektur Renderer Teks & Pygame (Tahap 4)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Memisahkan visualisasi menjadi dua modul independen: `tetris_rl/render_text.py` (terminal ASCII/Unicode) dan `tetris_rl/render_pygame.py` (grafis Pygame 2D).
+  2. Mengimplementasikan mode headless otomatis (`SDL_VIDEODRIVER=dummy`) pada `PygameRenderer` jika `DISPLAY` tidak terpasang atau saat flag `headless=True` aktif.
+  3. Mengimplementasikan fungsi `render_drop_animation` yang menghasilkan deretan frame RGB meluncur dari atas ke posisi landing row sebelum mengeksekusi frame papan hasil, serta fungsi `save_gif` berbasis `imageio`.
+- **Alasan:**
+  1. Menjaga komitmen Bagian 9 Dokumen Proyek: visualisasi tidak boleh memperlambat atau berada di dalam loop pelatihan agen.
+  2. Memungkinkan pengujian unit otomatis di CI/lingkungan server Linux headless tanpa X11 display server.
+  3. Memenuhi kebutuhan portofolio untuk merekam GIF/video evolusi belajar agen per checkpoint.
+- **Alternatif yang ditolak:**
+  - Menggabungkan kode pygame langsung di dalam `TetrisEnv.step()` (ditolak karena membuat pelatihan menjadi ribuan kali lebih lambat dan merusak arsitektur modular).
+  - Menggunakan library video encoding berat seperti OpenCV (ditolak karena `imageio` + `pillow` jauh lebih ringan dan sesuai dengan stack Python murni proyek).
+- **Dampak:** Tersedia visualisasi teks cepat di terminal dan kemampuan merekam rekaman visual animasi piece ke format GIF/MP4 tanpa monitor fisik. File demo visual berhasil di-generate di `docs/assets/demo_stage4.gif`.
+
