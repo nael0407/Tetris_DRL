@@ -13,11 +13,12 @@ Penggunaan:
 
 import argparse
 import os
-from typing import Optional, Union
+from typing import Any, Optional, Union
 import numpy as np
 
 from tetris_rl.agents.heuristic import HeuristicAgent
 from tetris_rl.agents.random_agent import RandomAgent
+from tetris_rl.agents.td_afterstate import DQNAfterstateAgent
 from tetris_rl.env import TetrisEnv
 from tetris_rl.render_pygame import PygameRenderer
 
@@ -46,10 +47,11 @@ def record_agent_gameplay(
         board_height: Tinggi papan Tetris (default: 20).
         board_width: Lebar papan Tetris (default: 10).
     """
+    obs_mode = "features" if agent_type.lower() in ("heuristic", "cem") else "raw"
     env = TetrisEnv(
         board_height=board_height,
         board_width=board_width,
-        obs_type="raw" if agent_type == "random" else "features",
+        obs_type=obs_mode,
         use_numba=True,
     )
 
@@ -62,7 +64,7 @@ def record_agent_gameplay(
 
     # Inisialisasi agen sesuai tipe
     agent_type_lower = agent_type.lower()
-    agent: Union[RandomAgent, HeuristicAgent]
+    agent: Union[RandomAgent, HeuristicAgent, DQNAfterstateAgent]
     if agent_type_lower == "random":
         agent = RandomAgent(seed=seed)
     elif agent_type_lower in ("heuristic", "cem"):
@@ -83,8 +85,18 @@ def record_agent_gameplay(
                 print("[Record] PERINGATAN: Bobot CEM tidak ditentukan. Menggunakan bobot heuristik standar.")
 
         agent = HeuristicAgent(weights=weights)
+    elif agent_type_lower in ("dqn", "td_net", "deep_rl"):
+        dqn_agent = DQNAfterstateAgent(board_height=board_height, board_width=board_width, representation="raw")
+        model_p = weights_path or "models/final/e2_td_net_best.pt"
+        if os.path.exists(model_p):
+            dqn_agent.load(model_p)
+            dqn_agent.epsilon = 0.0
+            print(f"[Record] Memuat model Deep Q-Network dari: {model_p}")
+        else:
+            raise FileNotFoundError(f"File model DQN tidak ditemukan: {model_p}")
+        agent = dqn_agent
     else:
-        raise ValueError(f"Agent '{agent_type}' tidak dikenal. Pilih: 'random', 'heuristic', 'cem'.")
+        raise ValueError(f"Agent '{agent_type}' tidak dikenal. Pilih: 'random', 'heuristic', 'cem', 'dqn'.")
 
     obs, info = env.reset(seed=seed)
     all_frames = []
@@ -101,10 +113,14 @@ def record_agent_gameplay(
         board_before = env.board.copy()
         current_p = env.current_piece
 
-        if isinstance(agent, HeuristicAgent):
+        if isinstance(agent, RandomAgent):
+            action = agent.act(obs=obs, info=info)
+        elif isinstance(agent, DQNAfterstateAgent):
+            action = agent.act(env=env, obs=obs, info=info, deterministic=True)
+        elif isinstance(agent, HeuristicAgent):
             action = agent.act(env=env, obs=obs, info=info)
         else:
-            action = agent.act(obs=obs, info=info)
+            action = agent.act(env=env, obs=obs, info=info)
 
         should_record = step_count >= start_step
 
@@ -150,9 +166,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--agent",
         type=str,
-        choices=["random", "heuristic", "cem"],
+        choices=["random", "heuristic", "cem", "dqn"],
         default="random",
-        help="Tipe agen yang direkam (random, heuristic, atau cem)",
+        help="Tipe agen yang direkam (random, heuristic, cem, dqn)",
     )
     parser.add_argument("--weights", type=str, default=None, help="Path ke file bobot .npy jika ada")
     parser.add_argument(
