@@ -60,8 +60,10 @@ class CEMAgent:
 
         if initial_mean is not None:
             self.mean = np.asarray(initial_mean, dtype=np.float32).copy()
-        else:
+        elif self.num_features == len(DEFAULT_HEURISTIC_WEIGHTS):
             self.mean = DEFAULT_HEURISTIC_WEIGHTS.copy()
+        else:
+            self.mean = np.zeros(self.num_features, dtype=np.float32)
 
         self.std = np.full(self.num_features, initial_std, dtype=np.float32)
         self.total_interaction_pieces: int = 0

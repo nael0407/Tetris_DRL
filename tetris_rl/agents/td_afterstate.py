@@ -128,6 +128,12 @@ class LinearTDAfterstateAgent:
         step = (self.alpha / (1.0 + 0.001 * norm_sq)) * td_error * features_curr
         step = np.clip(step, -1.0, 1.0)
         self.weights += step
+
+        # Proyeksi ke unit sphere (L2 normalization) seperti standar Bertsekas & Tsitsiklis (1996)
+        w_norm = float(np.linalg.norm(self.weights))
+        if w_norm > 0:
+            self.weights /= w_norm
+
         return float(td_error)
 
     def save(self, path: str) -> None:

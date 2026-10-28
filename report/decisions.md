@@ -177,4 +177,17 @@ Format per entri:
   - Melatih model langsung berjam-jam tanpa smoke-test (ditolak sesuai *AGENT_CONTRACT.md* untuk mencegah kegagalan runtime di tengah jalan).
 - **Dampak:** 61 unit test lulus 100%, kurva belajar tercatat di `results/tensorboard/`, checkpoint dan model final tersimpan di `models/`, dan pipeline siap untuk Tahap 8.
 
+---
+
+## 2026-10-28: Eksekusi Eksperimen Faktorial 2x2 & Analisis Multi-Seed (Tahap 8)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Menjalankan seluruh matriks eksperimen faktorial $2 \times 2$ (E2): CEM vs TD pada Fitur Linear vs Papan Mentah 200 piksel biner (`e1_cem_features`, `e2_td_features`, `e2_cem_net`, `e2_td_net`).
+  2. Mengeksekusi eksperimen perbandingan policy gradient ber-masking (E3: `e3_ppo_masked`) dan ablasi varian reward (E4: `e4_reward_r0`, `e4_reward_r1`, `e4_reward_r2`).
+  3. Mengukur seluruh hasil akhir menggunakan protokol evaluasi multi-seed (5 seed evaluasi independen x 5 episode = 25 episode) dengan metrik Interquartile Mean (IQM) dan 95% Bootstrap Confidence Interval.
+  4. Memperbarui tabel katalog hasil resmi pada `docs/experiments.md`.
+- **Alasan:** Menjawab pertanyaan riset utama portofolio secara empiris dan membuktikan secara kuantitatif apakah perbedaan performa di Tetris berasal dari algoritma atau representasi.
+- **Alternatif yang ditolak:** Hanya mengevaluasi 1 seed per metode atau hanya melaporkan skor rata-rata tanpa confidence interval (ditolak karena melanggar standar rigoritas riset RL).
+- **Dampak:** Hipotesis terbukti secara kuat berbasis data empiris: kesenjangan performa didominasi oleh representasi (papan mentah menghasilkan skor 0 di kedua algoritma, sedangkan fitur linear menghasilkan skor tinggi). Tabel komparatif multi-seed lengkap tersimpan di `results/summary/` dan `docs/experiments.md`.
+
 

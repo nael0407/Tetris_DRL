@@ -1,0 +1,63 @@
+{
+  "agent_name": "e4_reward_r2",
+  "num_episodes": 25,
+  "total_interaction_pieces": 15000,
+  "score": {
+    "iqm": 15.384615384615385,
+    "ci_low": 0.0,
+    "ci_high": 61.53846153846154,
+    "mean": 48.0
+  },
+  "lines_cleared": {
+    "iqm": 0.15384615384615385,
+    "ci_low": 0.0,
+    "ci_high": 0.6153846153846154,
+    "mean": 0.48
+  },
+  "steps_survived": {
+    "iqm": 26.46153846153846,
+    "mean": 26.44,
+    "censored_ratio": 0.0
+  },
+  "tetris_rate": 0.0,
+  "avg_holes": 39.46748036555593,
+  "avg_max_height": 19.96,
+  "survival_timeline": [
+    0,
+    17,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    32,
+    33,
+    34,
+    35
+  ],
+  "survival_probabilities": [
+    1.0,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96
+  ]
+}

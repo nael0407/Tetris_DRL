@@ -1,0 +1,55 @@
+{
+  "agent_name": "e2_td_net",
+  "num_episodes": 25,
+  "total_interaction_pieces": 50000,
+  "score": {
+    "iqm": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "mean": 12.0
+  },
+  "lines_cleared": {
+    "iqm": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "mean": 0.12
+  },
+  "steps_survived": {
+    "iqm": 27.923076923076923,
+    "mean": 28.36,
+    "censored_ratio": 0.0
+  },
+  "tetris_rate": 0.0,
+  "avg_holes": 35.8641268967163,
+  "avg_max_height": 20.0,
+  "survival_timeline": [
+    0,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    35
+  ],
+  "survival_probabilities": [
+    1.0,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96
+  ]
+}

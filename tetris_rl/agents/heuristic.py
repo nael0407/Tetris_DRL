@@ -46,15 +46,24 @@ class HeuristicAgent:
         else:
             self.weights = np.asarray(weights, dtype=np.float32)
 
-        if len(self.weights) != 4:
-            raise ValueError(f"Vektor bobot heuristik harus berdimensi 4, didapat {len(self.weights)}")
+        if len(self.weights) not in (4, 200):
+            raise ValueError(
+                f"Vektor bobot heuristik harus berdimensi 4 (fitur) atau 200 (papan mentah 20x10), didapat {len(self.weights)}"
+            )
 
     def evaluate_placement(self, placement: ValidPlacement) -> float:
         """Menghitung nilai evaluasi linear untuk suatu afterstate penempatan."""
         if placement.is_game_over:
             return -1e9  # Penalti ekstrim untuk mencegah game over
 
-        # Ekstraksi fitur afterstate
+        # Mode papan mentah (200 piksel)
+        if len(self.weights) == 200:
+            board_flat = placement.next_board.flatten().astype(np.float32)
+            # Nilai dot product + bonus pembersihan baris
+            score = float(np.dot(self.weights, board_flat) + placement.lines_cleared * 100.0)
+            return score
+
+        # Ekstraksi fitur afterstate klasik (4 fitur)
         board = placement.next_board
         holes = float(compute_holes(board))
         bump = float(compute_bumpiness(board))

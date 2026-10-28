@@ -1,0 +1,39 @@
+{
+  "agent_name": "e3_ppo_masked",
+  "num_episodes": 25,
+  "total_interaction_pieces": 50000,
+  "score": {
+    "iqm": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "mean": 0.0
+  },
+  "lines_cleared": {
+    "iqm": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "mean": 0.0
+  },
+  "steps_survived": {
+    "iqm": 8.0,
+    "mean": 7.84,
+    "censored_ratio": 0.0
+  },
+  "tetris_rate": 0.0,
+  "avg_holes": 5.010952380952381,
+  "avg_max_height": 19.08,
+  "survival_timeline": [
+    0,
+    6,
+    7,
+    8,
+    9
+  ],
+  "survival_probabilities": [
+    1.0,
+    0.96,
+    0.96,
+    0.96,
+    0.96
+  ]
+}

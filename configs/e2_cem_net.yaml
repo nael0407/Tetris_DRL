@@ -1,0 +1,31 @@
+# Konfigurasi Eksperimen E2: Cross-Entropy Method pada Papan Mentah (CEM-Net / Neuroevolution Linear)
+# Memenuhi sel faktorial 2x2: [Gradient-Free (CEM) x Papan Mentah]
+# Mengoptimasi 200 bobot sel afterstate board 20x10 secara gradient-free.
+
+experiment_id: "e2_cem_net"
+agent_type: "cem"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "raw"
+  reward_type: "R0"
+  piece_generator: "uniform"
+  use_numba: true
+
+cem:
+  num_features: 200
+  population_size: 20
+  elite_ratio: 0.20
+  max_iterations: 8
+  episodes_per_candidate: 2
+  initial_std: 0.2
+  noise_std: 0.02
+  noise_decay: 0.95
+  seed: 42
+
+eval:
+  seeds: [3001, 3002, 3003, 3004, 3005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+
