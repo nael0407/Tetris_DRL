@@ -223,3 +223,4 @@ def get_piece_rotation(piece_id: int, rotation_idx: int) -> PieceRotation:
             f"Piece ini hanya memiliki {p.num_rotations} rotasi unik (indeks 0..{p.num_rotations - 1})."
         )
     return p.rotations[rotation_idx]
+

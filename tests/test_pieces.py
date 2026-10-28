@@ -174,3 +174,4 @@ def test_constants() -> None:
     assert BOARD_WIDTH_DEFAULT == 10
     assert BOARD_HEIGHT_DEFAULT == 20
     assert ACTION_SPACE_SIZE == 40
+
