@@ -33,7 +33,7 @@ Gradient-Based (TD / DQN)                    400,0                       0,0
 ========================================================================================
 ```
 
-### Kesimpulan Inti (1–2 Kalimat):
+### Kesimpulan Inti:
 > **Kesenjangan performa di Tetris secara dominan ditentukan oleh REPRESENTASI KEADAAN, bukan algoritma optimasi.**  
 > Baik algoritma berbasis gradien (DQN) maupun bebas gradien (CEM) sama-sama gagal total (skor IQM 0,0) pada representasi papan spasial mentah $2^{200}$, sedangkan pada fitur linear terstruktur kedua keluarga algoritma berhasil belajar membersihkan baris secara konsisten.
 
