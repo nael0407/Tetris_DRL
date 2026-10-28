@@ -1,0 +1,28 @@
+# ==============================================================================
+# Eksperimen: E1 - Baseline Heuristik Literatur (Dellacherie Handcrafted Weights)
+# Sel Faktorial: Bukan bagian faktorial 2x2 (Fixed handcrafted heuristic baseline)
+# Karakteristik: Evaluasi linear afterstate menggunakan bobot teruji dari literatur
+#               (w_height: -0.510, w_lines: 0.761, w_holes: -0.357, w_bump: -0.184)
+# ==============================================================================
+
+experiment_id: "baseline_heuristic"
+agent_type: "heuristic"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "features"
+  reward_type: "R0"
+  piece_generator: "uniform"
+  use_numba: true
+
+agent:
+  weights: [-0.510066, 0.760666, -0.356630, -0.184483]
+  name: "Dellacherie-Standard"
+
+eval:
+  num_seeds: 5
+  seeds: [2001, 2002, 2003, 2004, 2005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+

@@ -1,0 +1,23 @@
+# ==============================================================================
+# Eksperimen: E1 - Baseline Batas Bawah (Random Agent)
+# Sel Faktorial: Bukan bagian faktorial 2x2 (Batas bawah / lower bound baseline)
+# Karakteristik: Memilih aksi acak seragam dari seluruh aksi legal pada action mask.
+# ==============================================================================
+
+experiment_id: "baseline_random"
+agent_type: "random"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "raw"
+  reward_type: "R0"
+  piece_generator: "uniform"
+  use_numba: true
+
+eval:
+  num_seeds: 5
+  seeds: [1001, 1002, 1003, 1004, 1005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+

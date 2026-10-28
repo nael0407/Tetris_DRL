@@ -1,0 +1,36 @@
+# ==============================================================================
+# Eksperimen: E1 & Sel 1 Faktorial 2x2 - Cross-Entropy Method (CEM) on Linear Features
+# Sel Faktorial: Baris 1, Kolom 1 (Gradient-Free x Fitur Linear)
+# Karakteristik: Optimasi distribusi parameter Gaussian terhadap 4 bobot fitur
+#               linear afterstate secara gradient-free. Anggaran interaksi
+#               dihitung jujur dari total piece seluruh evaluasi kandidat.
+# ==============================================================================
+
+experiment_id: "e1_cem_features"
+agent_type: "cem"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "features"
+  reward_type: "R0"
+  piece_generator: "uniform"
+  use_numba: true
+
+cem:
+  num_features: 4
+  population_size: 20
+  elite_ratio: 0.20
+  initial_std: 0.5
+  noise_std: 0.05
+  noise_decay: 0.98
+  max_iterations: 15
+  episodes_per_candidate: 2
+  seed: 42
+
+eval:
+  num_seeds: 5
+  seeds: [3001, 3002, 3003, 3004, 3005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+
