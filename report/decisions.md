@@ -91,7 +91,6 @@ Format per entri:
   - Menggunakan modul `random` bawaan Python untuk generator piece (ditolak karena tidak thread-safe dan sulit diintegrasikan dengan kontrol seed NumPy).
   - Membiarkan `ValidPlacement` tanpa `landing_row` (ditolak karena memaksa agen menghitung ulang pendaratan yang sebenarnya sudah didapat saat penempatan).
 - **Dampak:** Seluruh 33 unit test (mencakup rotasi, multi-baris tak bersambung, presisi batas game over, preservasi lubang, dan simulasi deterministik multi-seed) lulus 100%.
-- **Dampak:** Agen tidak akan lagi menjalankan perintah `git add`, `git commit`, atau `git push` secara mandiri.
 
 ---
 
@@ -109,24 +108,6 @@ Format per entri:
   - Menggabungkan kode pygame langsung di dalam `TetrisEnv.step()` (ditolak karena membuat pelatihan menjadi ribuan kali lebih lambat dan merusak arsitektur modular).
   - Menggunakan library video encoding berat seperti OpenCV (ditolak karena `imageio` + `pillow` jauh lebih ringan dan sesuai dengan stack Python murni proyek).
 - **Dampak:** Tersedia visualisasi teks cepat di terminal dan kemampuan merekam rekaman visual animasi piece ke format GIF/MP4 tanpa monitor fisik. File demo visual berhasil di-generate di `docs/assets/demo_stage4.gif`.
-
----
-
-## 2026-10-28: Arsitektur Renderer Teks & Pygame (Tahap 4)
-- **Tanggal:** 2026-10-28
-- **Keputusan:**
-  1. Memisahkan visualisasi menjadi dua modul independen: `tetris_rl/render_text.py` (terminal ASCII/Unicode) dan `tetris_rl/render_pygame.py` (grafis Pygame 2D).
-  2. Mengimplementasikan mode headless otomatis (`SDL_VIDEODRIVER=dummy`) pada `PygameRenderer` jika `DISPLAY` tidak terpasang atau saat flag `headless=True` aktif.
-  3. Mengimplementasikan fungsi `render_drop_animation` yang menghasilkan deretan frame RGB meluncur dari atas ke posisi landing row sebelum mengeksekusi frame papan hasil, serta fungsi `save_gif` berbasis `imageio`.
-- **Alasan:**
-  1. Menjaga komitmen Bagian 9 Dokumen Proyek: visualisasi tidak boleh memperlambat atau berada di dalam loop pelatihan agen.
-  2. Memungkinkan pengujian unit otomatis di CI/lingkungan server Linux headless tanpa X11 display server.
-  3. Memenuhi kebutuhan portofolio untuk merekam GIF/video evolusi belajar agen per checkpoint.
-- **Alternatif yang ditolak:**
-  - Menggabungkan kode pygame langsung di dalam `TetrisEnv.step()` (ditolak karena membuat pelatihan menjadi ribuan kali lebih lambat dan merusak arsitektur modular).
-  - Menggunakan library video encoding berat seperti OpenCV (ditolak karena `imageio` + `pillow` jauh lebih ringan dan sesuai dengan stack Python murni proyek).
-- **Dampak:** Tersedia visualisasi teks cepat di terminal dan kemampuan merekam rekaman visual animasi piece ke format GIF/MP4 tanpa monitor fisik. File demo visual berhasil di-generate di `docs/assets/demo_stage4.gif`.
-
 
 ---
 
@@ -149,20 +130,32 @@ Format per entri:
 
 ---
 
-## 2026-10-28: Arsitektur Antarmuka Gymnasium TetrisEnv (Tahap 5)
+## 2026-10-28: Evaluasi Baseline Klasik & Validasi Ceiling Effect (Tahap 6)
 - **Tanggal:** 2026-10-28
 - **Keputusan:**
-  1. Mengimplementasikan `TetrisEnv` mematuhi standar resmi Gymnasium dengan ruang aksi `Discrete(40)` dan observasi 1D `Box(float32)` untuk ketiga mode ('raw': 214 dimensi, 'features': 29 dimensi, 'combined': 229 dimensi), masing-masing memuat one-hot encoding piece aktif (7) dan preview next piece (7).
-  2. Mengimplementasikan 4 varian reward pelatihan (R0 sampai R3) dengan reward shaping R3 menggunakan formulasi *potential-based* ($\Phi(s) = - (4 \cdot holes + 1 \cdot bumpiness + 0.5 \cdot aggregate\_height)$) yang secara teoretis menjamin invariansi kebijakan optimal.
-  3. Mengunci metrik evaluasi pada skor game asli (100/300/500/800) yang selalu dicatat pada `info["score"]`.
-  4. Menyediakan metode helper `action_masks()` untuk integrasi langsung tanpa wrapper tambahan dengan `sb3-contrib.MaskablePPO`.
-  5. Menulis dokumen spesifikasi lengkap di `docs/environment.md`.
+  1. Mengimplementasikan 3 baseline klasik: `RandomAgent` (batas bawah), `HeuristicAgent` (bobot Dellacherie), dan `CEMAgent` (Cross-Entropy Method dengan pelacakan piece interaksi riil).
+  2. Menstandarisasi protokol evaluasi multi-seed (5 seed evaluasi independen x 5 episode = 25 episode) dengan metrik IQM dan bootstrap CI 95% (`tetris_rl/eval/stats.py`).
+  3. Mengonfirmasi hasil empiris batas papan: agen heuristik terbaik bertahan rata-rata 1.440 langkah (maksimal di kisaran ~2.500 langkah) dengan rasio tersensor $0.0\%$ terhadap batas 10.000 piece. Dengan demikian, papan standar $10 \times 20$ diputuskan tetap sebagai ukuran utama eksperimen karena terbukti bebas dari risiko *ceiling effect*.
 - **Alasan:**
-  1. Vektor 1D Box kompatibel *out-of-the-box* dengan seluruh pustaka RL standar (Stable-Baselines3, CleanRL, PyTorch) tanpa memerlukan arsitektur *custom feature extractor* yang rumit.
-  2. Memenuhi persyaratan eksperimen Dokumen Proyek Bagian 4.3, 4.4, dan 5.4.
-  3. Memastikan pemenuhan standar dokumen wajib dan terverifikasi 100% lolos `gymnasium.utils.env_checker.check_env`.
+  1. Memberikan baseline komparatif yang kredibel untuk menjawab pertanyaan riset "algoritma atau representasi" pada desain faktorial $2 \times 2$.
+  2. Memenuhi aturan kejujuran kontrak kerja: total piece CEM dihitung dari seluruh evaluasi kandidat ($659.779$ piece), bukan sekadar nomor generasi.
+  3. Menjawab pertanyaan pilot Bagian 3.5 Dokumen Proyek secara berbasis data nyata (*data-driven*).
 - **Alternatif yang ditolak:**
-  - Menggunakan `spaces.Dict` sebagai observasi default (ditolak untuk eksperimen utama karena memerlukan `MultiInputPolicy` yang lebih lambat dan memiliki overhead pemrosesan kamus per langkah pada MLP).
-  - Memberi reward negatif tanpa terminasi pada aksi ilegal (ditolak karena membiarkan agen berputar-putar mencoba aksi ilegal yang sia-sia).
-- **Dampak:** Seluruh 48 unit test (termasuk `check_env` pada 3 mode observasi) lulus 100%. Lingkungan siap digunakan untuk melatih dan mengevaluasi agen baseline di Tahap 6.
+  - Memperkecil tinggi papan menjadi 10x12 (ditolak karena hasil empiris membuktikan pada 10x20 agen heuristik belum mengalami ceiling effect).
+  - Mengevaluasi hanya dengan 1 seed atau melaporkan mean +/- std deviasi saja (ditolak karena rentan terhadap skewness dan outlier).
+- **Dampak:** Data baseline E1 lengkap tersimpan di `results/summary/` (JSON), rekaman GIF visual "sebelum belajar" dan "sesudah" tersedia di `docs/assets/`, dan katalog eksperimen tercatat di `docs/experiments.md`.
+
+---
+
+## 2026-10-28: Perbaikan Skrip Perekaman Visualisasi Gameplay (record.py)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Mengubah argumen `--output` menjadi opsional dengan default `"docs/assets/demo.gif"`.
+  2. Menambahkan auto-discovery bobot CEM: jika `--agent cem` dipilih tanpa argumen `--weights`, skrip otomatis mencari dan memuat `models/final/cem_features_best.npy`.
+  3. Menyesuaikan dimensi default papan ke ukuran standar Tetris $10 \times 20$ (sebelumnya `16`), dan menyediakan flag konfigurasi `--height` serta `--width`.
+  4. Memperbaiki anotasi tipe `weights_path: Optional[str] = None` dan proteksi pendaratan `effective_landing_row = max(0, res_preview.landing_row)` untuk mencegah crash saat move menyebabkan game over.
+- **Alasan:** Menghilangkan error CLI saat skrip dipanggil tanpa flag `--output`, mencegah konflik type checker pada VS Code/Pylance, dan memastikan rekaman sesuai standar dimensi game 10x20.
+- **Alternatif yang ditolak:** Memaksa pengguna selalu mengetikkan path output yang panjang secara manual di terminal.
+- **Dampak:** Skrip `record.py` dapat dieksekusi langsung tanpa argumen, kompatibel dengan seluruh agen (Random, Heuristic, CEM), dan terverifikasi pada suite pengujian `test_record_agent_gameplay_script`.
+
 

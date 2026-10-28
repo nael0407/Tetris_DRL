@@ -1,0 +1,50 @@
+{
+  "agent_name": "baseline_random",
+  "num_episodes": 25,
+  "score": {
+    "iqm": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "mean": 0.0,
+    "std": 0.0,
+    "median": 0.0
+  },
+  "lines_cleared": {
+    "iqm": 0.0,
+    "ci_low": 0.0,
+    "ci_high": 0.0,
+    "mean": 0.0
+  },
+  "steps_survived": {
+    "iqm": 20.307692307692307,
+    "mean": 20.6,
+    "censored_ratio": 0.0
+  },
+  "tetris_rate": 0.0,
+  "avg_holes": 30.426076129147468,
+  "avg_max_height": 19.12,
+  "survival_timeline": [
+    0,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    26
+  ],
+  "survival_probabilities": [
+    1.0,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96,
+    0.96
+  ]
+}
