@@ -13,10 +13,10 @@ Proyek riset portofolio Reinforcement Learning ini mengisolasi dan menjawab pert
 
 ## Demo Visual Gameplay
 
-| Sebelum Belajar (Random Baseline) | Sesudah Belajar (Trained CEM Agent) |
+| Sebelum Belajar (Random Baseline) | Sesudah Belajar (Trained CEM Agent - Peak Run) |
 |:---:|:---:|
-| ![Random Baseline](docs/assets/demo_random.gif) | ![Trained CEM Agent](docs/assets/demo_heuristic.gif) |
-| *IQM Skor: 0.0 \| Bertahan rata-rata 20 piece* | *IQM Skor: 55.169,2 \| 498 baris per episode* |
+| ![Random Baseline](docs/assets/demo_random.gif) | ![Trained CEM Agent](docs/assets/demo_cem.gif) |
+| *IQM Skor: 0,0 \| Bertahan rata-rata 20 piece* | *Fase Puncak Skor: 295.600 (2.691 baris) \| IQM: 55.169,2* |
 
 ---
 
@@ -138,7 +138,8 @@ python scripts/analyze.py --model models/final/e2_td_net_best.pt
 
 ### 6. Merekam Animasi Gameplay ke GIF
 ```bash
-python scripts/record.py --agent cem --output docs/assets/demo_cem.gif
+# Merekam episode puncak skor (295.600 poin) dari agen terlatih CEM
+python scripts/record.py --agent cem --seed 1004 --start-step 6715 --steps 55 --output docs/assets/demo_cem.gif
 ```
 
 ---

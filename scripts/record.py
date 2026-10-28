@@ -27,6 +27,7 @@ def record_agent_gameplay(
     weights_path: Optional[str] = None,
     output_path: str = "docs/assets/demo.gif",
     max_steps: int = 40,
+    start_step: int = 0,
     seed: int = 42,
     fps: int = 15,
     board_height: int = 20,
@@ -39,6 +40,7 @@ def record_agent_gameplay(
         weights_path: Path ke file bobot (.npy) jika menggunakan CEM.
         output_path: Path tujuan penyimpanan file GIF.
         max_steps: Jumlah langkah interaksi maksimum yang direkam.
+        start_step: Langkah awal sebelum animasi mulai direkam (default: 0).
         seed: Random seed untuk determinisme.
         fps: Frame per second untuk file animasi GIF.
         board_height: Tinggi papan Tetris (default: 20).
@@ -87,9 +89,15 @@ def record_agent_gameplay(
     obs, info = env.reset(seed=seed)
     all_frames = []
 
-    print(f"[Record] Merekam gameplay {agent_type_lower} (maks {max_steps} langkah, papan {board_width}x{board_height})...")
+    print(
+        f"[Record] Merekam gameplay {agent_type_lower} (mulai langkah {start_step}, "
+        f"maks {max_steps} langkah direkam, papan {board_width}x{board_height})..."
+    )
 
-    for step in range(max_steps):
+    step_count = 0
+    recorded_steps = 0
+    while recorded_steps < max_steps:
+        step_count += 1
         board_before = env.board.copy()
         current_p = env.current_piece
 
@@ -98,30 +106,34 @@ def record_agent_gameplay(
         else:
             action = agent.act(obs=obs, info=info)
 
-        rot = action // env.board_width
-        col = action % env.board_width
+        should_record = step_count >= start_step
 
-        res_preview = env.engine.place_piece(board_before, current_p, rot, col)
-        effective_landing_row = max(0, res_preview.landing_row)
+        if should_record:
+            rot = action // env.board_width
+            col = action % env.board_width
 
-        frames = renderer.render_drop_animation(
-            board_before=board_before,
-            piece_id=current_p,
-            rotation=rot,
-            col=col,
-            landing_row=effective_landing_row,
-            board_after=res_preview.board,
-            next_piece_id=env.next_piece,
-            score=env.score,
-            lines_cleared=env.lines_cleared,
-            steps=env.steps,
-            cells_per_frame=2.0,
-        )
-        all_frames.extend(frames)
+            res_preview = env.engine.place_piece(board_before, current_p, rot, col)
+            effective_landing_row = max(0, res_preview.landing_row)
+
+            frames = renderer.render_drop_animation(
+                board_before=board_before,
+                piece_id=current_p,
+                rotation=rot,
+                col=col,
+                landing_row=effective_landing_row,
+                board_after=res_preview.board,
+                next_piece_id=env.next_piece,
+                score=env.score,
+                lines_cleared=env.lines_cleared,
+                steps=env.steps,
+                cells_per_frame=2.0,
+            )
+            all_frames.extend(frames)
+            recorded_steps += 1
 
         obs, reward, terminated, truncated, info = env.step(action)
         if terminated or truncated:
-            print(f"[Record] Episode berakhir di langkah {step + 1}!")
+            print(f"[Record] Episode berakhir di langkah {step_count}!")
             break
 
     os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
@@ -150,6 +162,12 @@ if __name__ == "__main__":
         help="Path file keluaran GIF (default: docs/assets/demo.gif)",
     )
     parser.add_argument("--steps", type=int, default=30, help="Jumlah langkah maksimum yang direkam")
+    parser.add_argument(
+        "--start-step",
+        type=int,
+        default=0,
+        help="Langkah awal mulai merekam animasi (default: 0)",
+    )
     parser.add_argument("--seed", type=int, default=42, help="Seed evaluasi")
     parser.add_argument("--fps", type=int, default=15, help="Frame per second GIF")
     parser.add_argument("--height", type=int, default=20, help="Tinggi papan Tetris (default: 20)")
@@ -161,6 +179,7 @@ if __name__ == "__main__":
         weights_path=args.weights,
         output_path=args.output,
         max_steps=args.steps,
+        start_step=args.start_step,
         seed=args.seed,
         fps=args.fps,
         board_height=args.height,

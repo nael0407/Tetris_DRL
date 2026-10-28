@@ -214,4 +214,17 @@ Format per entri:
 - **Alternatif yang ditolak:** Menulis laporan yang hanya berisi cuplikan kode tanpa analisis mendalam tentang kegagalan dan dinamika representasi.
 - **Dampak:** Seluruh deliverable proyek Tetris RL (Tahap 1 s/d Tahap 10) telah 100% tuntas, terdokumentasi secara profesional, dan siap dipublikasikan di GitHub.
 
+---
+
+## 2026-10-28: Visual Demo Gameplay Puncak Skor Tertinggi
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Menambahkan parameter `--start-step` (default 0) pada `scripts/record.py` sehingga perekaman dapat difokuskan pada fase permainan tertentu tanpa membuang waktu animasi dari langkah awal (step 0).
+  2. Merekam animasi visual gameplay resolusi penuh agen terlatih (CEM) pada run dengan performa skor tertinggi (seed 1004, langkah 6715–6770 dengan skor puncak 295.600 poin dan 2.691 baris terhapus) ke dalam `docs/assets/demo_cem.gif`.
+  3. Memperbarui tabel visual di `README.md` dengan menautkan demo GIF puncak skor ini untuk memperlihatkan kapabilitas optimal agen sesudah belajar secara nyata pada HUD visual.
+- **Alasan:** Pada rekaman default sebelumnya, GIF hanya menampilkan 30 langkah pertama (skor 0–1.100), sehingga tidak merefleksikan performa sesungguhnya dari agen terlatih yang mampu mencetak ratusan ribu poin.
+- **Alternatif yang ditolak:** Menjalankan rekaman seluruh 6.773 frame (ditolak karena ukuran GIF akan membengkak hingga puluhan MB dan tidak optimal untuk pratinjau GitHub README).
+- **Dampak:** File `docs/assets/demo_cem.gif` berukuran optimal (~483 KB, 205 frame, 15 FPS) dan menyajikan demonstrasi gameplay berintensitas tinggi dengan skor 294.000–295.600 poin secara presisi.
+
+
 
