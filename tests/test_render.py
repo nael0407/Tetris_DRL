@@ -154,3 +154,20 @@ def test_pygame_drop_animation_and_gif_export() -> None:
 
     renderer.close()
 
+
+def test_record_agent_gameplay_script() -> None:
+    """Menguji eksekusi skrip record_agent_gameplay secara headless dan end-to-end."""
+    from scripts.record import record_agent_gameplay
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out_gif = os.path.join(tmpdir, "record_test.gif")
+        record_agent_gameplay(
+            agent_type="random",
+            output_path=out_gif,
+            max_steps=5,
+            board_height=10,
+            board_width=6,
+        )
+        assert os.path.exists(out_gif)
+        assert os.path.getsize(out_gif) > 0
+
