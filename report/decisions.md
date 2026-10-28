@@ -57,3 +57,38 @@ Format per entri:
 - **Alasan:** Instruksi langsung dari pemilik proyek untuk memegang kendali penuh atas manajemen versi lokal dan repositori GitHub.
 - **Alternatif yang ditolak:** Agen mengeksekusi git commit/push otomatis via bash tool.
 - **Dampak:** Agen tidak akan lagi menjalankan perintah `git add`, `git commit`, atau `git push` secara mandiri.
+
+---
+
+## 2026-10-28: Pengujian Otomatis Lanjutan & Penataan Engine (Tahap 3)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Menambahkan modul generator piece berbasis seed (`UniformPieceGenerator` dan `SevenBagPieceGenerator`) di `tetris_rl/pieces.py`.
+  2. Menyertakan field `landing_row: int` pada `ValidPlacement` di `board.py` dan `board_fast.py`.
+  3. Memperbaiki cakupan pemindaian line-clear pada `board.py`: mengubah pemindaian lokal rentang piece menjadi pemindaian penuh papan (`range(height)`) agar 100% konsisten dengan kernel JIT `board_fast.py`.
+- **Alasan:**
+  1. Reproduktibilitas riset menuntut urutan kemunculan piece dikontrol ketat oleh random seed generator terisolasi.
+  2. Nilai `landing_row` sangat dibutuhkan oleh heuristik (fitur landing height Dellacherie) dan pemilihan aksi deterministik.
+  3. Menjamin kesetaraan absolut antara versi NumPy dan Numba bahkan pada kasus papan uji sintetis yang memiliki baris penuh di luar area pendaratan piece.
+- **Alternatif yang ditolak:**
+  - Menggunakan modul `random` bawaan Python untuk generator piece (ditolak karena tidak thread-safe dan sulit diintegrasikan dengan kontrol seed NumPy).
+  - Membiarkan `ValidPlacement` tanpa `landing_row` (ditolak karena memaksa agen menghitung ulang pendaratan yang sebenarnya sudah didapat saat penempatan).
+- **Dampak:** Seluruh 33 unit test (mencakup rotasi, multi-baris tak bersambung, presisi batas game over, preservasi lubang, dan simulasi deterministik multi-seed) lulus 100%.
+
+---
+
+## 2026-10-28: Pengujian Otomatis Lanjutan & Penataan Engine (Tahap 3)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Menambahkan modul generator piece berbasis seed (`UniformPieceGenerator` dan `SevenBagPieceGenerator`) di `tetris_rl/pieces.py`.
+  2. Menyertakan field `landing_row: int` pada `ValidPlacement` di `board.py` dan `board_fast.py`.
+  3. Memperbaiki cakupan pemindaian line-clear pada `board.py`: mengubah pemindaian lokal rentang piece menjadi pemindaian penuh papan (`range(height)`) agar 100% konsisten dengan kernel JIT `board_fast.py`.
+- **Alasan:**
+  1. Reproduktibilitas riset menuntut urutan kemunculan piece dikontrol ketat oleh random seed generator terisolasi.
+  2. Nilai `landing_row` sangat dibutuhkan oleh heuristik (fitur landing height Dellacherie) dan pemilihan aksi deterministik.
+  3. Menjamin kesetaraan absolut antara versi NumPy dan Numba bahkan pada kasus papan uji sintetis yang memiliki baris penuh di luar area pendaratan piece.
+- **Alternatif yang ditolak:**
+  - Menggunakan modul `random` bawaan Python untuk generator piece (ditolak karena tidak thread-safe dan sulit diintegrasikan dengan kontrol seed NumPy).
+  - Membiarkan `ValidPlacement` tanpa `landing_row` (ditolak karena memaksa agen menghitung ulang pendaratan yang sebenarnya sudah didapat saat penempatan).
+- **Dampak:** Seluruh 33 unit test (mencakup rotasi, multi-baris tak bersambung, presisi batas game over, preservasi lubang, dan simulasi deterministik multi-seed) lulus 100%.
+- **Dampak:** Agen tidak akan lagi menjalankan perintah `git add`, `git commit`, atau `git push` secara mandiri.
