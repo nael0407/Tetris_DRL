@@ -1,0 +1,33 @@
+# Konfigurasi Eksperimen E3: MaskablePPO dengan Action Masking
+# Policy Gradient langsung pada ruang aksi Discrete(40) dengan masking aksi ilegal
+# Membandingkan pendekatan direct-action policy gradient dengan afterstate value-based.
+
+experiment_id: "e3_ppo_masked"
+agent_type: "ppo_masked"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "raw"
+  reward_type: "R3"  # Potential-based reward shaping
+  piece_generator: "uniform"
+  use_numba: true
+
+ppo:
+  learning_rate: 0.0003
+  n_steps: 512
+  batch_size: 64
+  n_epochs: 5
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.01
+  total_timesteps: 50000
+  checkpoint_interval: 10000
+  seed: 42
+
+eval:
+  seeds: [3001, 3002, 3003, 3004, 3005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+

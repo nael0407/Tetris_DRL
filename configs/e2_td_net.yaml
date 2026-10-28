@@ -1,0 +1,35 @@
+# Konfigurasi Eksperimen E2: Deep Q-Network (DQN) Afterstate pada Papan Mentah (Raw Board)
+# Memenuhi sel faktorial 2x2: [Gradient-based (TD) + Papan mentah]
+# Menjawab apakah Deep Q-Learning pada representasi piksel/papan mentah mampu menemukan representasi yang baik.
+
+experiment_id: "e2_td_net"
+agent_type: "dqn_afterstate"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "raw"
+  reward_type: "R3"  # Potential-based shaping (R3) untuk stabilitas pembelajaran TD
+  piece_generator: "uniform"
+  use_numba: true
+
+dqn:
+  representation: "raw"
+  hidden_dims: [128, 64]
+  lr: 0.0005
+  gamma: 0.99
+  buffer_capacity: 50000
+  batch_size: 64
+  target_update_freq: 500
+  epsilon_start: 1.0
+  epsilon_end: 0.05
+  epsilon_decay_steps: 20000
+  total_timesteps: 50000
+  checkpoint_interval: 10000
+  seed: 42
+
+eval:
+  seeds: [3001, 3002, 3003, 3004, 3005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+

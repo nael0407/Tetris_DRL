@@ -1,0 +1,27 @@
+# Konfigurasi Eksperimen E2: Linear TD(0) Afterstate pada Fitur Linear
+# Memenuhi sel faktorial 2x2: [Gradient-based (TD) + Fitur linear]
+# Memverifikasi apakah TD(0) mampu menyamai atau mendekati performa CEM pada representasi fitur yang sama.
+
+experiment_id: "e2_td_features"
+agent_type: "td_linear"
+
+env:
+  board_height: 20
+  board_width: 10
+  obs_type: "features"
+  reward_type: "R3"  # Potential-based reward shaping untuk percepatan konvergensi TD
+  piece_generator: "uniform"
+  use_numba: true
+
+td:
+  alpha: 0.001
+  gamma: 0.99
+  epsilon: 0.05
+  total_timesteps: 50000
+  seed: 42
+
+eval:
+  seeds: [3001, 3002, 3003, 3004, 3005]
+  episodes_per_seed: 5
+  max_steps_per_episode: 10000
+

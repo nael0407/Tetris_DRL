@@ -158,4 +158,23 @@ Format per entri:
 - **Alternatif yang ditolak:** Memaksa pengguna selalu mengetikkan path output yang panjang secara manual di terminal.
 - **Dampak:** Skrip `record.py` dapat dieksekusi langsung tanpa argumen, kompatibel dengan seluruh agen (Random, Heuristic, CEM), dan terverifikasi pada suite pengujian `test_record_agent_gameplay_script`.
 
+---
+
+## 2026-10-28: Arsitektur Agen Deep RL & Verifikasi Smoke-Test (Tahap 7)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Menginstal PyTorch versi CPU (`torch-cpu`, ~196 MB) untuk menghemat kapasitas disk sistem dan menghilangkan overhead transfer CPU-GPU pada forward pass jaringan kecil berkecepatan tinggi.
+  2. Mengimplementasikan `LinearTDAfterstateAgent` dengan pembaruan gradien ternormalisasi (*Normalized LMS / Normalized TD*) dan pembatasan klip langkah $\Delta \mathbf{w} \in [-1.0, 1.0]$ untuk menjamin stabilitas numerik pada fitur dengan skala dinamis.
+  3. Mengimplementasikan `DQNAfterstateAgent` dengan arsitektur Double DQN, Experience Replay Buffer NumPy berkecepatan tinggi, target network update periodik, serta evaluasi batch cepat terhadap seluruh penempatan sah (`valid_placements`).
+  4. Mengintegrasikan `MaskedPPOAgent` berbasis `sb3-contrib.MaskablePPO` dengan wrapper `ActionMasker` yang terhubung langsung ke `TetrisEnv.action_masks()`.
+  5. Menambahkan logging otomatis ke TensorBoard, mekanisme checkpoint model (`models/checkpoints/` dan `models/final/`), serta memvalidasi pipeline pelatihan melalui *smoke-test* pilot run.
+- **Alasan:**
+  1. Memenuhi kriteria selesai Tahap 7 pada Dokumen Proyek: seluruh agen siap latih, kurva belajar tercatat di TensorBoard, dan checkpoint berhasil tersimpan.
+  2. Mencegah *divergence* atau *overflow* pada linear TD(0) saat memproses fitur unnormalized.
+  3. Memastikan kesiapan penuh seluruh sel eksperimen faktorial $2 \times 2$ (E2 s/d E5) sebelum eksekusi pelatihan skala besar di Tahap 8.
+- **Alternatif yang ditolak:**
+  - Memasang PyTorch CUDA dengan paket dependensi cuDNN/Triton 4GB+ (ditolak karena memicu `OSError: [Errno 28] No space left on device` pada partisi sistem host dan tidak memberikan akselerasi berarti untuk MLP berdimensi 200).
+  - Melatih model langsung berjam-jam tanpa smoke-test (ditolak sesuai *AGENT_CONTRACT.md* untuk mencegah kegagalan runtime di tengah jalan).
+- **Dampak:** 61 unit test lulus 100%, kurva belajar tercatat di `results/tensorboard/`, checkpoint dan model final tersimpan di `models/`, dan pipeline siap untuk Tahap 8.
+
 
