@@ -11,7 +11,8 @@ Setiap konfigurasi memiliki bounding box rapat (tight bounding box) dan tepat 4 
 """
 
 from dataclasses import dataclass
-from typing import Dict, List, Tuple, Union
+from abc import ABC, abstractmethod
+from typing import Dict, List, Optional, Tuple, Union
 import numpy as np
 
 
@@ -224,3 +225,90 @@ def get_piece_rotation(piece_id: int, rotation_idx: int) -> PieceRotation:
         )
     return p.rotations[rotation_idx]
 
+
+
+# --- Generator Urutan Piece (Randomizer) ---
+
+
+class PieceGenerator(ABC):
+    """Kelas abstrak dasar untuk pembangkit urutan tetromino."""
+
+    @abstractmethod
+    def reset(self, seed: Optional[int] = None) -> None:
+        """Mereset kondisi acak generator dengan seed tertentu."""
+        pass
+
+    @abstractmethod
+    def next_piece(self) -> int:
+        """Menghasilkan ID piece berikutnya (0 sampai 6)."""
+        pass
+
+
+class UniformPieceGenerator(PieceGenerator):
+    """Pengacak piece seragam independen (default penelitian Tetris RL).
+
+    Setiap langkah membangkitkan ID piece (0..6) secara acak seragam.
+    Semua keacakan dikontrol oleh instance np.random.Generator untuk determinisme total.
+    """
+
+    def __init__(self, seed: Optional[int] = None) -> None:
+        self.rng: np.random.Generator = np.random.default_rng(seed)
+
+    def reset(self, seed: Optional[int] = None) -> None:
+        if seed is not None:
+            self.rng = np.random.default_rng(seed)
+
+    def next_piece(self) -> int:
+        return int(self.rng.integers(0, NUM_PIECES))
+
+
+class SevenBagPieceGenerator(PieceGenerator):
+    """Pengacak 7-bag standar Tetris Guideline.
+
+    Setiap kantong (bag) berisi permutasi acak dari ke-7 tetromino unik (I, O, T, S, Z, J, L).
+    Piece baru diambil dari kantong hingga habis, lalu kantong baru dikocok.
+    """
+
+    def __init__(self, seed: Optional[int] = None) -> None:
+        self.rng: np.random.Generator = np.random.default_rng(seed)
+        self.current_bag: List[int] = []
+        self._refill()
+
+    def _refill(self) -> None:
+        perm = self.rng.permutation(NUM_PIECES).tolist()
+        self.current_bag = [int(x) for x in perm]
+
+    def reset(self, seed: Optional[int] = None) -> None:
+        if seed is not None:
+            self.rng = np.random.default_rng(seed)
+        self.current_bag.clear()
+        self._refill()
+
+    def next_piece(self) -> int:
+        if not self.current_bag:
+            self._refill()
+        return self.current_bag.pop(0)
+
+
+def create_piece_generator(
+    generator_type: str = "uniform",
+    seed: Optional[int] = None,
+) -> PieceGenerator:
+    """Factory function untuk membuat generator piece.
+
+    Args:
+        generator_type: Jenis pengacak ('uniform' untuk acak seragam, '7-bag' untuk 7-bag).
+        seed: Seed bilangan acak untuk reproduktibilitas.
+
+    Returns:
+        Instance PieceGenerator.
+    """
+    gen_type = generator_type.lower()
+    if gen_type in ("uniform", "random"):
+        return UniformPieceGenerator(seed=seed)
+    elif gen_type in ("7-bag", "7bag", "seven_bag", "sevenbag"):
+        return SevenBagPieceGenerator(seed=seed)
+    else:
+        raise ValueError(
+            f"Tipe generator piece '{generator_type}' tidak dikenal. Pilihan valid: 'uniform', '7-bag'."
+        )
