@@ -193,6 +193,6 @@ Didistribusikan di bawah lisensi MIT. Silakan lihat [`LICENSE`](LICENSE) untuk i
 7. **Icarte, R. T., Klassen, T. Q., Valenzuela, R., et al. (2022).** *Reward Machines: Exploiting Reward Function Structure in Reinforcement Learning*. Journal of Artificial Intelligence Research, 73, 173-208. https://doi.org/10.1613/jair.1.12440
 
 #### Fondasi Klasik & Teoretis
-9. **Szita, I., & Lőrincz, A. (2006).** *Learning Tetris using the noisy cross-entropy method*. Neural computation, 18(12), 2936-2941. *(Aplikasi Cross-Entropy Method pada game Tetris).*
-10. **Bertsekas, D. P. (2001).** *Neuro-dynamic programming*. Encyclopedia of Optimization. *(Formulasi teoretis Afterstate Value Function).*
-11. **Ng, A. Y., Harada, D., & Russell, S. (1999).** *Policy invariance under reward transformations: Theory and application to reward shaping*. ICML. *(Invariansi kebijakan optimal di bawah transformasi reward shaping).*
+8. **Szita, I., & Lőrincz, A. (2006).** *Learning Tetris using the noisy cross-entropy method*. Neural computation, 18(12), 2936-2941. *(Aplikasi Cross-Entropy Method pada game Tetris).*
+9. **Bertsekas, D. P. (2001).** *Neuro-dynamic programming*. Encyclopedia of Optimization. *(Formulasi teoretis Afterstate Value Function).*
+10. **Ng, A. Y., Harada, D., & Russell, S. (1999).** *Policy invariance under reward transformations: Theory and application to reward shaping*. ICML. *(Invariansi kebijakan optimal di bawah transformasi reward shaping).*
