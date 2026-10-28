@@ -196,17 +196,13 @@ Berdasarkan investigasi empiris yang ketat melalui desain faktorial $2 \times 2$
 
 ## 10. Referensi
 
-### 10.1 Literatur Modern (2020 ke Atas)
-1. **Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. G. (2021).** *Deep reinforcement learning at the edge of the statistical precipice*. Advances in Neural Information Processing Systems (NeurIPS 2021), 34, 29304-29320. *(Landasan protokol evaluasi statistik tangguh: IQM, 95% stratified bootstrap confidence interval, dan kurva survival via pustaka `rliable`).*
-2. **Huang, S., & Ontañón, S. (2022).** *A closer look at invalid action masking in policy gradient algorithms*. The International FLAIRS Conference Proceedings, 35. *(Landasan teoritis dan empiris integrasi MaskablePPO serta penanganan aksi ilegal pada ruang aksi diskrit).*
-3. **McGrath, T., Kapishnikov, A., Tomašev, N., Pearce, T., Wattenberg, M., Hassabis, D., ... & Kim, B. (2022).** *Acquisition of chess knowledge in AlphaZero*. Proceedings of the National Academy of Sciences (PNAS), 119(47), e2206625119. *(Metodologi linear probing untuk menyelidiki konsep abstrak terstruktur yang dipelajari secara spontan oleh hidden layer neural network pada game papan).*
-4. **Schwarzer, M., Anand, A., Goel, R., Hjelm, R. D., Courville, A., & Bachman, P. (2021).** *Data-efficient reinforcement learning with self-predictive representations*. International Conference on Learning Representations (ICLR 2021). *(Tinjauan komparatif mengenai tantangan representasi spasial mentah dan sample efficiency pada Deep RL).*
-5. **Raffin, A., Hill, A., Gleave, A., Kanervisto, A., Ernestus, M., & Dormann, N. (2021).** *Stable-Baselines3: Reliable Reinforcement Learning Implementations*. Journal of Machine Learning Research (JMLR), 22(268), 1-8. *(Standar implementasi algoritma RL baku dan arsitektur pengujian otomatis).*
-6. **Towers, M., Jordan, J. K., Willems, R., et al. (2024).** *Gymnasium: A Standard Interface for Reinforcement Learning Environments*. arXiv preprint arXiv:2407.17032. *(Spesifikasi standar antarmuka lingkungan interaksi RL modern).*
-7. **Mao, H., et al. (2022).** *Reward Shaping and State Abstraction in Complex Combinatorial Gridworld Games*. Journal of Artificial Intelligence Research (JAIR), 74, 845-889. *(Analisis dampak reward shaping potensial dan abstraksi ruang keadaan pada game berbasis grid).*
-
-### 10.2 Literatur Klasik & Fondasi Teoretis
-8. **Szita, I., & Lőrincz, A. (2006).** *Learning Tetris using the noisy cross-entropy method*. Neural computation, 18(12), 2936-2941.
-9. **Bertsekas, D. P., & Tsitsiklis, J. N. (1996).** *Neuro-dynamic programming*. Athena Scientific. *(Formulasi teoritis Afterstate Value Function).*
-10. **Dellacherie, C. (1989).** *Algorithmes pour le jeu Tetris*. DEA thesis, Université de Picardie Jules Verne. *(Definisi fitur analitis agregat, lubang, dan bumpiness).*
-11. **Ng, A. Y., Harada, D., & Russell, S. (1999).** *Policy invariance under reward transformations: Theory and application to reward shaping*. ICML. *(Invariansi kebijakan optimal pada reward shaping R3).*
+1. **Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. G. (2021).** *Deep reinforcement learning at the edge of the statistical precipice*. Neural Information Processing Systems. *(Metodologi evaluasi statistik baku: IQM, stratified bootstrap 95% CI via `rliable`).*
+2. **Huang, S., & Ontañón, S. (2022).** *A closer look at invalid action masking in policy gradient algorithms*. The International FLAIRS Conference Proceedings, 35. *(Landasan teoritis dan empiris MaskablePPO serta penanganan aksi ilegal).*
+3. **McGrath, T., Kapishnikov, A., Tomašev, N., Pearce, T., Wattenberg, M., Hassabis, D., ... & Kim, B. (2022).** *Acquisition of chess knowledge in AlphaZero*. Proceedings of the National Academy of Sciences (PNAS), 119(47), e2206625119. *(Metodologi linear probing untuk mengukur representasi laten pada game board).*
+4. **Schwarzer, M., Anand, A., Goel, R., Hjelm, R. D., Courville, A., & Bachman, P. (2020).** *Data-efficient reinforcement learning with self-predictive representations*. ICLR 2020. *(Analisis representasi spasial mentah vs efisiensi sampel Deep RL).*
+5. **Raffin, A., Hill, A., Gleave, A., Kanervisto, A., Ernestus, M., & Dormann, N. (2021).** *Stable-Baselines3: Reliable Reinforcement Learning Implementations*. elib (German Aerospace Center), 22(268), 1-8. *(Implementasi standar algoritma RL dan pengujian reliabilitas).*
+6. **Towers, M., Jordan, J. K., Willems, R., et al. (2025).** *Gymnasium: A Standard Interface for Reinforcement Learning Environments*. Advances in Neural Information Processing Systems 38. *(Spesifikasi antarmuka lingkungan interaksi RL).*
+7. **Icarte, R. T., Klassen, T. Q., Valenzuela, R., et al. (2022).** *Reward Machines: Exploiting Reward Function Structure in Reinforcement Learning*. Journal of Artificial Intelligence Research, 73, 173-208. https://doi.org/10.1613/jair.1.12440
+8. **Szita, I., & Lőrincz, A. (2006).** *Learning Tetris using the noisy cross-entropy method*. Neural computation, 18(12), 2936-2941. *(Aplikasi Cross-Entropy Method pada game Tetris).*
+9. **Bertsekas, D. P. (2001).** *Neuro-dynamic programming*. Encyclopedia of Optimization. *(Formulasi teoretis Afterstate Value Function).*
+10. **Ng, A. Y., Harada, D., & Russell, S. (1999).** *Policy invariance under reward transformations: Theory and application to reward shaping*. ICML. *(Invariansi kebijakan optimal di bawah transformasi reward shaping).*

@@ -184,7 +184,6 @@ Didistribusikan di bawah lisensi MIT. Silakan lihat [`LICENSE`](LICENSE) untuk i
 
 ### Referensi Literatur
 
-#### Literatur Modern (2020 ke Atas)
 1. **Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. G. (2021).** *Deep reinforcement learning at the edge of the statistical precipice*. Neural Information Processing Systems. *(Metodologi evaluasi statistik baku: IQM, stratified bootstrap 95% CI via `rliable`).*
 2. **Huang, S., & Ontañón, S. (2022).** *A closer look at invalid action masking in policy gradient algorithms*. The International FLAIRS Conference Proceedings, 35. *(Landasan teoritis dan empiris MaskablePPO serta penanganan aksi ilegal).*
 3. **McGrath, T., Kapishnikov, A., Tomašev, N., Pearce, T., Wattenberg, M., Hassabis, D., ... & Kim, B. (2022).** *Acquisition of chess knowledge in AlphaZero*. Proceedings of the National Academy of Sciences (PNAS), 119(47), e2206625119. *(Metodologi linear probing untuk mengukur representasi laten pada game board).*
@@ -192,8 +191,6 @@ Didistribusikan di bawah lisensi MIT. Silakan lihat [`LICENSE`](LICENSE) untuk i
 5. **Raffin, A., Hill, A., Gleave, A., Kanervisto, A., Ernestus, M., & Dormann, N. (2021).** *Stable-Baselines3: Reliable Reinforcement Learning Implementations*. elib (German Aerospace Center), 22(268), 1-8. *(Implementasi standar algoritma RL dan pengujian reliabilitas).*
 6. **Towers, M., Jordan, J. K., Willems, R., et al. (2025).** *Gymnasium: A Standard Interface for Reinforcement Learning Environments*. Advances in Neural Information Processing Systems 38. *(Spesifikasi antarmuka lingkungan interaksi RL).*
 7. **Icarte, R. T., Klassen, T. Q., Valenzuela, R., et al. (2022).** *Reward Machines: Exploiting Reward Function Structure in Reinforcement Learning*. Journal of Artificial Intelligence Research, 73, 173-208. https://doi.org/10.1613/jair.1.12440
-
-#### Fondasi Klasik & Teoretis
 8. **Szita, I., & Lőrincz, A. (2006).** *Learning Tetris using the noisy cross-entropy method*. Neural computation, 18(12), 2936-2941. *(Aplikasi Cross-Entropy Method pada game Tetris).*
 9. **Bertsekas, D. P. (2001).** *Neuro-dynamic programming*. Encyclopedia of Optimization. *(Formulasi teoretis Afterstate Value Function).*
 10. **Ng, A. Y., Harada, D., & Russell, S. (1999).** *Policy invariance under reward transformations: Theory and application to reward shaping*. ICML. *(Invariansi kebijakan optimal di bawah transformasi reward shaping).*
