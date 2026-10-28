@@ -202,4 +202,16 @@ Format per entri:
 - **Alternatif yang ditolak:** Hanya mengandalkan visualisasi Saliency Map / Grad-CAM (ditolak karena pada grid biner diskrit $20 \times 10$, Grad-CAM seringkali kabur dan tidak membuktikan pemahaman konsep abstrak seperti lubang atau ketinggian).
 - **Dampak:** Terbukti bahwa representasi laten DQN mengodekan `aggregate_height` ($R^2 = 0.958$), `max_height` ($R^2 = 0.912$), dan `holes` ($R^2 = 0.886$) dengan akurasi sangat tinggi, serta bereaksi negatif ($\Delta V = -7.44$) saat disuntikkan lubang buatan. Seluruh 66 unit test lulus 100%.
 
+---
+
+## 2026-10-28: Laporan Riset Komprehensif & Pemolesan Portofolio (Tahap 10)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Menyusun laporan riset ilmiah komprehensif di `report/report.md` mencakup Abstrak, Pendahuluan, Metodologi, Desain Faktorial $2 \times 2$, Hasil Empiris Multi-Seed, Interpretabilitas, Analisis Kegagalan, Diskusi Keterbatasan, dan Referensi.
+  2. Menyusun `README.md` utama dengan standar portofolio AI profesional: badge status, visual demo GIF sebelum dan sesudah belajar, matriks ringkasan faktorial, tabel metrik IQM/CI, grafik probing, dan perintah reproduksi satu baris.
+  3. Memastikan seluruh 66 unit test lulus 100% dan struktur repositori bebas dari file sementara/korup.
+- **Alasan:** Menyelesaikan deliverable akhir proyek sesuai Dokumen Proyek Bagian 10, 12, dan 14 serta aturan `Agent/DOCUMENTATION_STANDARDS.md`.
+- **Alternatif yang ditolak:** Menulis laporan yang hanya berisi cuplikan kode tanpa analisis mendalam tentang kegagalan dan dinamika representasi.
+- **Dampak:** Seluruh deliverable proyek Tetris RL (Tahap 1 s/d Tahap 10) telah 100% tuntas, terdokumentasi secara profesional, dan siap dipublikasikan di GitHub.
+
 
