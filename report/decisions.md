@@ -190,4 +190,16 @@ Format per entri:
 - **Alternatif yang ditolak:** Hanya mengevaluasi 1 seed per metode atau hanya melaporkan skor rata-rata tanpa confidence interval (ditolak karena melanggar standar rigoritas riset RL).
 - **Dampak:** Hipotesis terbukti secara kuat berbasis data empiris: kesenjangan performa didominasi oleh representasi (papan mentah menghasilkan skor 0 di kedua algoritma, sedangkan fitur linear menghasilkan skor tinggi). Tabel komparatif multi-seed lengkap tersimpan di `results/summary/` dan `docs/experiments.md`.
 
+---
+
+## 2026-10-28: Analisis Interpretabilitas: Linear Probing & Intervensi Kausal (Tahap 9)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Mengimplementasikan regresi linear least-squares (*Linear Probing*) pada aktivasi hidden layer model DQN (`tetris_rl/analysis/probing.py`) untuk memprediksi 5 fitur struktural papan (aggregate height, max height, holes, bumpiness, wells).
+  2. Mengimplementasikan protokol intervensi papan terkontrol (*Causal Intervention*) pada `tetris_rl/analysis/intervention.py` (penyuntikan lubang buatan di bawah tumpukan dan penambahan ketinggian kolom) untuk mengukur $\Delta V(s) = V(s') - V(s_0)$.
+  3. Menyusun skrip orkestrasi `scripts/analyze.py` yang mengeksekusi pipeline analisis, menyimpan hasil terstruktur ke `results/analysis/`, serta menghasilkan grafik publikasi di `docs/assets/probing_r2_scores.png` dan `docs/assets/intervention_value_delta.png`.
+- **Alasan:** Memenuhi kriteria Bagian 8 Dokumen Proyek ("Interpretabilitas / Arah C"): membuktikan secara kuantitatif apakah model deep RL yang hanya dilatih dari piksel biner berhasil mempelajari representasi geometri papan secara implisit.
+- **Alternatif yang ditolak:** Hanya mengandalkan visualisasi Saliency Map / Grad-CAM (ditolak karena pada grid biner diskrit $20 \times 10$, Grad-CAM seringkali kabur dan tidak membuktikan pemahaman konsep abstrak seperti lubang atau ketinggian).
+- **Dampak:** Terbukti bahwa representasi laten DQN mengodekan `aggregate_height` ($R^2 = 0.958$), `max_height` ($R^2 = 0.912$), dan `holes` ($R^2 = 0.886$) dengan akurasi sangat tinggi, serta bereaksi negatif ($\Delta V = -7.44$) saat disuntikkan lubang buatan. Seluruh 66 unit test lulus 100%.
+
 

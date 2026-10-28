@@ -1,0 +1,14 @@
+{
+  "hole_injection": {
+    "mean_delta_value": -7.440436840057373,
+    "std_delta_value": 21.495681762695312,
+    "fraction_negative_impact": 0.6022727272727273,
+    "num_samples": 176
+  },
+  "height_increase": {
+    "mean_delta_value": 2.856365919113159,
+    "std_delta_value": 29.497480392456055,
+    "fraction_negative_impact": 0.4866666666666667,
+    "num_samples": 300
+  }
+}
