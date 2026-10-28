@@ -178,4 +178,5 @@ def test_valid_placements_equivalence() -> None:
             assert r.column == f.column
             assert r.lines_cleared == f.lines_cleared
             assert r.is_game_over == f.is_game_over
+            assert r.landing_row == f.landing_row
             np.testing.assert_array_equal(r.next_board, f.next_board)

@@ -134,7 +134,7 @@ def _compute_afterstates_jit(
     dims_table: np.ndarray,
     num_rotations_table: np.ndarray,
     width: int,
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, int]:
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray, np.ndarray, int]:
     """JIT kernel: Menghitung afterstate untuk seluruh penempatan legal secara cepat.
 
     Returns:
@@ -142,6 +142,7 @@ def _compute_afterstates_jit(
         next_boards: (N, H, W) uint8
         lines_cleared: (N,) int32
         game_over_flags: (N,) bool
+        landing_rows: (N,) int32
         count: N (jumlah aksi legal)
     """
     H, W = board.shape
@@ -153,6 +154,7 @@ def _compute_afterstates_jit(
     out_boards = np.empty((max_actions, H, W), dtype=np.uint8)
     out_cleared = np.empty(max_actions, dtype=np.int32)
     out_game_over = np.empty(max_actions, dtype=np.bool_)
+    out_landing_row = np.empty(max_actions, dtype=np.int32)
 
     count = 0
     for rot in range(num_rots):
@@ -167,9 +169,17 @@ def _compute_afterstates_jit(
             out_boards[count] = nb
             out_cleared[count] = lc
             out_game_over[count] = go
+            out_landing_row[count] = lr
             count += 1
 
-    return out_actions[:count], out_boards[:count], out_cleared[:count], out_game_over[:count], count
+    return (
+        out_actions[:count],
+        out_boards[:count],
+        out_cleared[:count],
+        out_game_over[:count],
+        out_landing_row[:count],
+        count,
+    )
 
 
 # --- Public Python Wrapper API (Kompatibel dengan tetris_rl.board) ---
@@ -226,7 +236,7 @@ def get_action_mask(piece_id: int, width: int = BOARD_WIDTH_DEFAULT) -> np.ndarr
 def get_valid_placements(board: np.ndarray, piece_id: int) -> List[ValidPlacement]:
     """Wrapper Numba untuk menghitung afterstate seluruh penempatan legal."""
     height, width = board.shape
-    actions, boards, cleared, game_overs, count = _compute_afterstates_jit(
+    actions, boards, cleared, game_overs, landing_rows, count = _compute_afterstates_jit(
         board,
         piece_id,
         COORDS_TABLE,
@@ -247,6 +257,7 @@ def get_valid_placements(board: np.ndarray, piece_id: int) -> List[ValidPlacemen
                 next_board=boards[i],
                 lines_cleared=int(cleared[i]),
                 is_game_over=bool(game_overs[i]),
+                landing_row=int(landing_rows[i]),
             )
         )
     return valid_list

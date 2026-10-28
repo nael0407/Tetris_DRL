@@ -45,6 +45,7 @@ class ValidPlacement(NamedTuple):
     next_board: np.ndarray   # Matriks papan afterstate
     lines_cleared: int       # Jumlah baris yang dihapus
     is_game_over: bool       # True jika aksi tersebut berakibat game over
+    landing_row: int         # Posisi baris pendaratan piece
 
 
 def create_board(height: int = BOARD_HEIGHT_DEFAULT, width: int = BOARD_WIDTH_DEFAULT) -> np.ndarray:
@@ -182,12 +183,9 @@ def place_piece(
         c = col + coords[i, 1]
         new_board[r, c] = 1
 
-    # Cek penghapusan baris (hanya pada rentang baris yang ditempati piece)
-    # Rentang baris yang terkena dampak: [landing_row, landing_row + p_height - 1]
+    # Cek penghapusan baris pada seluruh papan
     cleared_rows = []
-    r_start = landing_row
-    r_end = min(landing_row + p_height, height)
-    for r in range(r_start, r_end):
+    for r in range(height):
         if np.all(new_board[r, :] == 1):
             cleared_rows.append(r)
 
@@ -270,6 +268,7 @@ def get_valid_placements(
                 next_board=res.board,
                 lines_cleared=res.lines_cleared,
                 is_game_over=res.is_game_over,
+                landing_row=res.landing_row,
             )
         )
 
