@@ -127,3 +127,42 @@ Format per entri:
   - Menggunakan library video encoding berat seperti OpenCV (ditolak karena `imageio` + `pillow` jauh lebih ringan dan sesuai dengan stack Python murni proyek).
 - **Dampak:** Tersedia visualisasi teks cepat di terminal dan kemampuan merekam rekaman visual animasi piece ke format GIF/MP4 tanpa monitor fisik. File demo visual berhasil di-generate di `docs/assets/demo_stage4.gif`.
 
+
+---
+
+## 2026-10-28: Arsitektur Antarmuka Gymnasium TetrisEnv (Tahap 5)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Mengimplementasikan `TetrisEnv` mematuhi standar resmi Gymnasium dengan ruang aksi `Discrete(40)` dan observasi 1D `Box(float32)` untuk ketiga mode ('raw': 214 dimensi, 'features': 29 dimensi, 'combined': 229 dimensi), masing-masing memuat one-hot encoding piece aktif (7) dan preview next piece (7).
+  2. Mengimplementasikan 4 varian reward pelatihan (R0 sampai R3) dengan reward shaping R3 menggunakan formulasi *potential-based* ($\Phi(s) = - (4 \cdot holes + 1 \cdot bumpiness + 0.5 \cdot aggregate\_height)$) yang secara teoretis menjamin invariansi kebijakan optimal.
+  3. Mengunci metrik evaluasi pada skor game asli (100/300/500/800) yang selalu dicatat pada `info["score"]`.
+  4. Menyediakan metode helper `action_masks()` untuk integrasi langsung tanpa wrapper tambahan dengan `sb3-contrib.MaskablePPO`.
+  5. Menulis dokumen spesifikasi lengkap di `docs/environment.md`.
+- **Alasan:**
+  1. Vektor 1D Box kompatibel *out-of-the-box* dengan seluruh pustaka RL standar (Stable-Baselines3, CleanRL, PyTorch) tanpa memerlukan arsitektur *custom feature extractor* yang rumit.
+  2. Memenuhi persyaratan eksperimen Dokumen Proyek Bagian 4.3, 4.4, dan 5.4.
+  3. Memastikan pemenuhan standar dokumen wajib dan terverifikasi 100% lolos `gymnasium.utils.env_checker.check_env`.
+- **Alternatif yang ditolak:**
+  - Menggunakan `spaces.Dict` sebagai observasi default (ditolak untuk eksperimen utama karena memerlukan `MultiInputPolicy` yang lebih lambat dan memiliki overhead pemrosesan kamus per langkah pada MLP).
+  - Memberi reward negatif tanpa terminasi pada aksi ilegal (ditolak karena membiarkan agen berputar-putar mencoba aksi ilegal yang sia-sia).
+- **Dampak:** Seluruh 48 unit test (termasuk `check_env` pada 3 mode observasi) lulus 100%. Lingkungan siap digunakan untuk melatih dan mengevaluasi agen baseline di Tahap 6.
+
+---
+
+## 2026-10-28: Arsitektur Antarmuka Gymnasium TetrisEnv (Tahap 5)
+- **Tanggal:** 2026-10-28
+- **Keputusan:**
+  1. Mengimplementasikan `TetrisEnv` mematuhi standar resmi Gymnasium dengan ruang aksi `Discrete(40)` dan observasi 1D `Box(float32)` untuk ketiga mode ('raw': 214 dimensi, 'features': 29 dimensi, 'combined': 229 dimensi), masing-masing memuat one-hot encoding piece aktif (7) dan preview next piece (7).
+  2. Mengimplementasikan 4 varian reward pelatihan (R0 sampai R3) dengan reward shaping R3 menggunakan formulasi *potential-based* ($\Phi(s) = - (4 \cdot holes + 1 \cdot bumpiness + 0.5 \cdot aggregate\_height)$) yang secara teoretis menjamin invariansi kebijakan optimal.
+  3. Mengunci metrik evaluasi pada skor game asli (100/300/500/800) yang selalu dicatat pada `info["score"]`.
+  4. Menyediakan metode helper `action_masks()` untuk integrasi langsung tanpa wrapper tambahan dengan `sb3-contrib.MaskablePPO`.
+  5. Menulis dokumen spesifikasi lengkap di `docs/environment.md`.
+- **Alasan:**
+  1. Vektor 1D Box kompatibel *out-of-the-box* dengan seluruh pustaka RL standar (Stable-Baselines3, CleanRL, PyTorch) tanpa memerlukan arsitektur *custom feature extractor* yang rumit.
+  2. Memenuhi persyaratan eksperimen Dokumen Proyek Bagian 4.3, 4.4, dan 5.4.
+  3. Memastikan pemenuhan standar dokumen wajib dan terverifikasi 100% lolos `gymnasium.utils.env_checker.check_env`.
+- **Alternatif yang ditolak:**
+  - Menggunakan `spaces.Dict` sebagai observasi default (ditolak untuk eksperimen utama karena memerlukan `MultiInputPolicy` yang lebih lambat dan memiliki overhead pemrosesan kamus per langkah pada MLP).
+  - Memberi reward negatif tanpa terminasi pada aksi ilegal (ditolak karena membiarkan agen berputar-putar mencoba aksi ilegal yang sia-sia).
+- **Dampak:** Seluruh 48 unit test (termasuk `check_env` pada 3 mode observasi) lulus 100%. Lingkungan siap digunakan untuk melatih dan mengevaluasi agen baseline di Tahap 6.
+
