@@ -37,3 +37,14 @@ Format per entri:
 - **Alasan:** Menjaga transparansi, keteraturan, dan kualitas portofolio riset dari awal hingga akhir proyek.
 - **Alternatif yang ditolak:** Menulis dokumentasi dan laporan hanya di akhir setelah seluruh eksperimen selesai (ditolak karena rawan lupa detail desain, asumsi awal, atau bug yang terjadi selama proses).
 - **Dampak:** Kerangka `report/report.md` akan mulai disusun lebih awal (khususnya bagian Pendahuluan dan Metode), dan setiap file konfigurasi eksperimen akan memiliki metadata yang konsisten.
+
+---
+
+## 2026-10-28: Arsitektur Logika Papan & Akselerasi Numba (Tahap 2)
+- **Tanggal:** 2026-10-28
+- **Keputusan:** Membangun dua implementasi logika papan: `tetris_rl/board.py` (referensi NumPy murni) dan `tetris_rl/board_fast.py` (terakselerasi Numba JIT), dengan perhitungan pendaratan langsung dari profil ketinggian kolom (`r_landing = min(top[col + dc] - 1 - dr)`) dan pembersihan baris menggunakan algoritma *two-pointer compaction* dari bawah ke atas.
+- **Alasan:** Pelatihan agen berbasis afterstate (DQN dan CEM) memerlukan evaluasi ribuan papan per detik. Pendekatan analitis profil kolom menghilangkan kebutuhan simulasi loop pergeseran sel bertahap yang lambat, sementara Numba mengompilasi eksekusi afterstate menjadi instruksi mesin langsung.
+- **Alternatif yang ditolak:**
+  - Melakukan simulasi jatuh per langkah (step-by-step falling loop) untuk hard drop (ditolak karena tidak diperlukan pada model penempatan akhir tanpa tuck dan membebani komputasi).
+  - Hanya menulis versi Numba tanpa versi referensi NumPy murni (ditolak karena melanggar prinsip verifikasi kontrak kerja: kebenaran logika Numba wajib dibuktikan setara dengan kode referensi murni).
+- **Dampak:** Perilaku NumPy dan Numba terbukti 100% identik pada pengujian 2.500 variasi papan acak (`test_board_equiv.py`), sekaligus menyediakan fungsi batch afterstate berkecepatan tinggi untuk tahapan algoritma RL.

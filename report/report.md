@@ -101,3 +101,4 @@ Untuk mengurai pengaruh algoritma dan representasi secara terpisah tanpa bias pe
 1. Szita, I., & Lőrincz, A. (2006). *Learning Tetris using the noisy cross-entropy method*. Neural computation, 18(12), 2936-2941.
 2. Gabillon, V., Ghavamzadeh, M., & Scherrer, B. (2013). *Approximate dynamic programming finally performs well in the game of Tetris*. Advances in Neural Information Processing Systems (NeurIPS).
 3. Agarwal, R., Schwarzer, M., Castro, P. S., Courville, A. C., & Bellemare, M. (2021). *Deep reinforcement learning at the edge of the statistical precipice*. Advances in Neural Information Processing Systems (NeurIPS).
+

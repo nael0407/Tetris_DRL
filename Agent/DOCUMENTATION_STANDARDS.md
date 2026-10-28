@@ -80,3 +80,4 @@ Dokumen ini berisi pedoman wajib dan sangat disarankan terkait struktur, waktu p
 - **Waktu pengerjaan:** Ditulis saat file konfigurasi dibuat.
 - **Aturan:**
   - Blok komentar pembuka di baris teratas: tujuan eksperimen, sel faktorial terkait (misal: *CEM + Fitur Linear* atau *TD + Raw Board*), serta perbedaan spesifik dibandingkan konfigurasi dasar (*base config*).
+
