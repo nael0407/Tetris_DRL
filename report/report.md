@@ -32,7 +32,7 @@ Proyek riset ini dirancang untuk menjawab pertanyaan tersebut secara kausal tanp
 
 ### 2.1 Cross-Entropy Method (CEM)
 Cross-Entropy Method (Rubinstein, 1999) adalah algoritma optimasi stokastik berbasis populasi. Pada Tetris, CEM memodelkan distribusi parameter bobot $\mathbf{w}$ sebagai distribusi Gaussian multivariat $\mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$. Di setiap iterasi:
-1. Membangkitkan $P$ kandidat bobot: $\mathbf{w}_i \sim \mathcal{N}(\boldsymbol{\mu}, \operatorname{diag}(\boldsymbol{\sigma}^2))$.
+1. Membangkitkan $P$ kandidat bobot: $\mathbf{w}_i \sim \mathcal{N}(\boldsymbol{\mu}, \mathrm{diag}(\boldsymbol{\sigma}^2))$.
 2. Mengevaluasi performa tiap kandidat dengan memainkan game Tetris.
 3. Memilih proporsi teratas (*elite fraction*, $\rho$) dari kandidat dengan skor tertinggi.
 4. Memperbarui $\boldsymbol{\mu}$ dan $\boldsymbol{\sigma}$ menuju parameter sampel elit tersebut.
@@ -41,7 +41,7 @@ Szita & Lőrincz (2006) membuktikan bahwa penambahan *noise* konstan pada kovari
 
 ### 2.2 Temporal Difference & Deep Q-Networks (DQN) Afterstate
 Pendekatan berbasis nilai (*value-based RL*) bertujuan mengestimasi fungsi nilai $V(s)$ atau $Q(s, a)$. Dalam game Tetris, Sutton & Barto (2018) serta Bertsekas & Tsitsiklis (1996) menekankan pentingnya formulasi **Afterstate**:
-$$s' = \operatorname{place}(s, a)$$
+$$s' = \mathrm{place}(s, a)$$
 Alih-alih memprediksi $Q(s, a)$ saat piece masih melayang, agen mengevaluasi nilai papan sesaat setelah piece ditempatkan namun sebelum piece berikutnya muncul. Formulasi ini mengeliminasi ketidakpastian stokastik piece berikutnya dari transisi aksi deterministik:
 $$a^* = \arg\max_{a \in \mathcal{A}_{\text{legal}}} \left[ r(s, a, s') + \gamma V(s') \right]$$
 
@@ -77,7 +77,7 @@ Untuk mengurai pengaruh algoritma dan representasi secara terpisah, empat sel ut
   - **R0:** Hanya poin game asli (sparse).
   - **R1:** R0 + survival bonus (+1.0 per piece) - penalti game over (-10.0).
   - **R2:** R1 - penalti lubang ($0.5 \times \text{holes}$) - penalti tinggi ($0.1 \times \max h$).
-  - **R3 (Potential-Based Shaping):** $R_0 + \gamma \Phi(s') - \Phi(s) - 20.0 \cdot \mathbb{I}_{\text{terminal}}$, dengan $\Phi(s) = -(4 \cdot \text{holes} + 1 \cdot \text{bumpiness} + 0.5 \cdot \text{agg\_h})$ yang secara teoretis menjamin invariansi kebijakan optimal (Ng et al., 1999).
+  - **R3 (Potential-Based Shaping):** $R_0 + \gamma \Phi(s') - \Phi(s) - 20.0 \cdot \mathbb{I}_{\text{terminal}}$, dengan $\Phi(s) = -(4 \cdot \text{holes} + 1 \cdot \text{bumpiness} + 0.5 \cdot \text{aggregate height})$ yang secara teoretis menjamin invariansi kebijakan optimal (Ng et al., 1999).
 
 ---
 

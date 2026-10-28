@@ -68,13 +68,13 @@ Poin resmi permainan (*Game Score*) dihitung tetap:
 
 Varian reward pelatihan:
 - **`R0` (Sparse Game Points):**
-  $$R = \text{GamePoints}(\text{lines\_cleared})$$
+  $$R = \text{GamePoints}(\text{lines cleared})$$
 - **`R1` (Survival Bonus):**
   $$R = \text{GamePoints} + 1.0 \cdot \mathbb{I}(\text{not game over}) - 10.0 \cdot \mathbb{I}(\text{game over})$$
 - **`R2` (Heuristic Penalties):**
-  $$R = R_1 - 0.5 \cdot \text{holes} - 0.1 \cdot \text{max\_height} - 20.0 \cdot \mathbb{I}(\text{game over})$$
+  $$R = R_1 - 0.5 \cdot \text{holes} - 0.1 \cdot \text{max height} - 20.0 \cdot \mathbb{I}(\text{game over})$$
 - **`R3` (Potential-Based Reward Shaping):**
-  Menggunakan fungsi potensial $\Phi(s) = - (4.0 \cdot \text{holes} + 1.0 \cdot \text{bumpiness} + 0.5 \cdot \text{aggregate\_height})$:
+  Menggunakan fungsi potensial $\Phi(s) = - (4.0 \cdot \text{holes} + 1.0 \cdot \text{bumpiness} + 0.5 \cdot \text{aggregate height})$:
   $$R = R_0 + (\Phi(s') - \Phi(s)) - 20.0 \cdot \mathbb{I}(\text{game over})$$
   *(Berdasarkan teorema Ng, Harada & Russell 1999, potential-based shaping menjamin policy optimal tetap invarian).*
 
